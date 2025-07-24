@@ -1,11 +1,22 @@
 
 
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [file, setFile] = useState(null);
   const adminName = 'Business Analyst'; // Replace with dynamic name if needed
+  const navigate = useNavigate();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -58,6 +69,17 @@ export default function Dashboard() {
               <li><a href="#" className="block text-blue-700 hover:underline">Dashboard</a></li>
               <li><a href="#" className="block text-blue-700 hover:underline">Meetings</a></li>
               <li><a href="#" className="block text-blue-700 hover:underline">Settings</a></li>
+              <li>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('isLoggedIn');
+                    navigate('/logout');
+                  }}
+                  className="block w-full text-left text-red-600 hover:underline bg-transparent border-none p-0"
+                >
+                  Logout
+                </button>
+              </li>
             </ul>
           </aside>
 

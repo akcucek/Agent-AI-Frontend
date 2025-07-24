@@ -20,6 +20,7 @@ export default function Login() {
     );
     if (user) {
       setError('');
+      localStorage.setItem('isLoggedIn', 'true');
       if (user.role === 'admin') {
         navigate('/admin');
       } else {
